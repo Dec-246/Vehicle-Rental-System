@@ -1,0 +1,91 @@
+#show understanding of topics
+/ we can create function to create dummy data (1_000_000 data exceptions)
+/ vid presentation is 7 mins long, we can use comments, too 
+
+
+#WEEK01
+* use clamp to take in three numbers (the value, min and max)   [W1]
+* Convert between types
+<> use of different variables
+<> use of classes
+<> if and else ( if)
+* switch case
+<> while loop (create infinite loop)
+* for loop (loop over code a set amount of times)
+* foreach loop (loop over each item in a collection)
+<> functions (package code up and run when prompted)
+<> functions that return data
+* functions that receive data via parameters
+* class member functions
+
+#WEEK02
+* use a list (add, remove, sort, contains [E3], average, min, max, sum, count) [SW1]    list of vehicles (find unique vehicles [ IEnumerable<string> <name of variable> = <listname>.Distinct(); ]   [TW5]
+* [use ContainsKey] allow user to search for vehicle in system/ contains key)  [SW4]    [SE2]
+* allow customer to be added to list of customers 
+* hashset list (add to list of reg plates in admin mode) (find number of unique vehicles ( <listname>.Count() ))  [SW6]   (PREVENTS DUPLICATE DATA)
+* dictionary list (list of special/ vehicles from class) (dictionary to print out vehicle data) (USED BECUASE DICTIONARIES ARE FASTER PERFORMING TO SEARCH THROUGH DATA)
+
+#WEEK03
+* (.Take) / (.TakeLast)
+* IEnumerable (.Select()) [TW2] loops over items in a list- it doesn't create a new collection or contain any real items- more-so creates a view of actual collection (doesn't evaluate until you loop over it)- example: doubling the numbers from a list
+* Where() [TW1] [for a list (special vehicle class/ vehicle type object)]//takes existing collection and creates new/ filtered collection with items that pass a test //where uses same syntax as select but after the '=>' it must return true or false
+* all and any (returns true or false, must use bool) // check if values are within a range.
+* [use All]      [TW2]  [TE2] year manufacture greater than 2020??
+* .OrderBy() 
+* [OrderBy]  oldest to newest vehicles   [TE3]
+
+
+#WEEK04
+-------
+
+#WEEK05- Command Line
+<> command line arguments | how to use system/ application (version number) | where to store file option (user to store their own version of file)
+* switch case [case(vehicle type), standard fee multiplied by set amount depending on vehicle type (luxury equals higher cost)]
+* .Split()
+
+#WEEK06- Robustness
+* ERROR handling (if (args.Length != [no. of args expected])| then output error message)
+* try (exception) catch (output user input with error message)
+* add colour to error messages
+
+#WEEK07- Encapsulation and Constructors
+* Member functions 
+* private data
+* getters and setters
+* constructors
+
+#WEEK08- Inheritance and Polymorphism
+* inheritance
+* polymorphism
+* 
+
+#WEEK09- Serialisation and Binary Files
+* JSON/ BINARY/ STREAMREADER/ WRITER
+
+
+// array
+ 
+
+
+// robustness [try/ catch] make sure to use an exception on the try parameter   [CommandLineArguments.exe]
+// [Stream writer/ stream reader] (write/ read to file)  (dictionary for vehicles)
+// Json (read from file)   [NW1]
+// binary write (bw), binary read (br) (store data of customers) (binary allows data to be encrypted) [NWE]
+// Stopwatch?? | StartNew|   AsParallel (faster than foreach becuase it uses multiple processors) |  .ElapsedMilliseconds|   .Next  (using multiple processors)  [TWE]
+// profiling and performance .capacity (adding length of values in  a list)
+// .parallel
+
+
+
+// ask user to enter type of user they are (using arguments)
+// display options depending on user 
+
+// --user
+// ask to be added as a customer of the system (add their details to list/ class of customers) [ newCustomer = Console.ReadLine().ToLower(); | <listname>.Add(newCustomer);  [SE1]  [NE1]
+// display oldest to newest vehicles [TE3]
+
+
+// --admin 
+// *manually add customer to list 
+// *add vehicle to system
+// *Print list of customers emails (@) (Where/ Contains/ IEnumerable/ foreach/ list) [TE1]  

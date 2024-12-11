@@ -4,17 +4,55 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+
 namespace SystemsProgrammingAssignment
 {
-    internal class Customer : vehicle
+    // Customer will inherit the objects from the rental class because it will include all data from rental class and more. 
+    internal class Customer
     {
-            public int customerID { get; set; }
-            public string name { get; set; }
-            private string email { get; set; }
-            private string mobileNumber { get; set; }
-            public string rentedVehicles { get; set; }
+        private int customerID;
+        private string firstname; 
+        private string lastname;
+        private string email;
+        private string mobileNumber;
+        private string rentedVehicles;
 
-        public override void WriteBinary(BinaryWriter bw)
+        // constructor 
+        public Customer (int customerID, string name, string email, string mobileNumber, string rentedVehicles)
+        {
+            this.customerID = customerID;
+            string[] names = name.Split(" ");
+            this.firstname = names[0];
+            this.lastname = names[1];
+            this.email = email;
+            this.mobileNumber = mobileNumber;
+            this.rentedVehicles = rentedVehicles;
+        }
+
+        
+
+        // Accessors / getters (include the data type of object)
+        public int GetCustomerID () { return customerID; }
+        public string GetName() { return firstname + " " + lastname; }
+        public string GetEmail() { return email; }
+        public string GetMobileNumber() { return mobileNumber; }
+        public string GetRentedVehicles() { return rentedVehicles; }
+
+        // Mutators / setters (void)
+        public void SetCustomerID (int customerID) {this.customerID = customerID; }
+        public void SetName(string name) { 
+            string[] names = name.Split(" "); 
+            this.firstname = names[0]; 
+            this.lastname= names[1]; }
+        public void SetEmail(string email) {this.email = email; }
+        public void SetMobileNumber (string mobileNumber) {this.mobileNumber = mobileNumber; }
+        public void SetRentedVehicles (string rentedVehicles) { this.rentedVehicles = rentedVehicles; }
+    }
+
+
+}
+
+        /*public override void WriteBinary(BinaryWriter bw)
         {
             bw.Write("Customer");
             bw.Write(customerId);
@@ -25,10 +63,14 @@ namespace SystemsProgrammingAssignment
 
             bw.Write("\n\nVehice");
             bw.Write(vehicleID);
-            bw.Write(Name);
+            bw.Write(availabilityStatus);
+            bw.Write(make);
+            bw.Write(model);
             bw.Write(year);
             bw.Write(mileage);
-            bw.Write(availabilityStatus);
+            bw.Write(fuelType);
+            bw.Write(transmission);
+            bw.Write(capacity);
         }
 
         public override void ReadBinary(BinaryReader br)
@@ -42,15 +84,17 @@ namespace SystemsProgrammingAssignment
             this.rentedVehicles = br.ReadString();
 
             this.vehicleID = br.ReadInt32();
-            this.Name = br.ReadString();
+            this.availabilityStatus = br.ReadBoolean();
+            this.make = br.ReadString();
+            this.model = br.ReadString();
             this.year = br.ReadInt32();
             this.mileage = br.ReadInt32();
-            this.availabilityStatus = br.ReadBoolean();
+            this.fuelType = br.ReadString();
+            this.transmission = br.ReadString();
+            this.capacity = br.ReadInt32();
         }
 
         public override string ToString()
         {
             return "\n\nCustomer: " + "\nID: " + CustomerID + "\nName: " + name + "\Email: " + email + "\nMobile Number: " + mobileNumber + "\nRented Vehicles: " + rentedVehicles + "\nVehicle ID: " + vehicleID + "\nName: " + Name + "\nYear: " + year + "\nMileage: " + mileage + "\nAvailability Status: " + availabilityStatus;
-        }
-    }
-}
+        }*/

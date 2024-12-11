@@ -1,0 +1,38 @@
+// use clamp to take in three numbers (the value, min and max)   [W1]
+// use class to output different data from class objects
+// use a function (creating options for user to pick when on menu)
+// use a list (add, remove, sort, contains [E3], average, min, max, sum, count) [SW1]    list of vehicles (find unique vehicles [ IEnumerable<string> <name of variable> = <listname>.Distinct(); ]   [TW5]
+// allow customer to be added to list of customers 
+// while loop
+// for loop
+// foreach loop
+// convert to 
+// 
+// hashset list (add to list of reg plates in admin mode) (find number of unique vehicles ( <listname>.Count() ))  [SW6]
+// dictionary list (list of special/ vehicles from class) (dictionary to print out 
+// [use ContainsKey] allow user to search for vehicle in system/ contains key)  [SW4]    [SE2]
+// [use Where]    [use TW1]
+// [use select]   [TW2]
+// [use All]      [TW2]  [TE2] year manufacture greater than 2020??
+// [OrderBy]  oldest to newest vehicles   [TE3]
+// robustness [try/ catch]    [CommandLineArguments.exe]
+// [Stream writer/ stream reader] (write/ read to file)  (dictionary for vehicles)
+// Json (read from file)   [NW1]
+// binary write (bw), binary read (br) (store data of customers) (binary allows data to be encrypted) [NWE]
+// Stopwatch?? | StartNew|   AsParallel|  .ElapsedMilliseconds|   .Next  (using multiple processors)  [TWE]
+// profiling and performance .capacity (adding length of values in  a list)
+
+
+
+// ask user to enter type of user they are (using arguments)
+// display options depending on user 
+
+// --user
+// ask to be added as a customer of the system (add their details to list/ class of customers) [ newCustomer = Console.ReadLine().ToLower(); | <listname>.Add(newCustomer);  [SE1]  [NE1]
+// display oldest to newest vehicles [TE3]
+
+
+// --admin 
+// *manually add customer to list 
+// *add vehicle to system
+// *Print list of customers emails (@) (Where/ Contains/ IEnumerable/ foreach/ list) [TE1]  
