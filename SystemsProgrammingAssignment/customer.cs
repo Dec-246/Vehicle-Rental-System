@@ -8,45 +8,61 @@ using System.Xml.Linq;
 namespace SystemsProgrammingAssignment
 {
     // Customer will inherit the objects from the rental class because it will include all data from rental class and more. 
-    internal class Customer
+    internal class User : Rental
     {
-        private int customerID;
-        private string firstname; 
-        private string lastname;
-        private string email;
-        private string mobileNumber;
-        private string rentedVehicles;
+        protected int userID;
+        protected string firstname; 
+        protected string lastname;
+        protected string email;
+        protected string mobileNumber;
 
         // constructor 
-        public Customer (int customerID, string name, string email, string mobileNumber, string rentedVehicles)
+        public User(int userID, string name, string email, string mobileNumber)
         {
-            this.customerID = customerID;
+            this.userID = userID;
             string[] names = name.Split(" ");
             this.firstname = names[0];
             this.lastname = names[1];
             this.email = email;
             this.mobileNumber = mobileNumber;
-            this.rentedVehicles = rentedVehicles;
+        }
+        public User()
+        {
+
         }
 
-        
+        /*public string DisplayUserInfo()
+        {
+            return $"ID: {GetUserID()} \nName: {GetName()} \nEmail: {GetEmail()} \nMobile Number: {GetMobileNumber()}";
+        }*/
+
 
         // Accessors / getters (include the data type of object)
-        public int GetCustomerID () { return customerID; }
+        public int GetUserID() { return userID; }
         public string GetName() { return firstname + " " + lastname; }
         public string GetEmail() { return email; }
         public string GetMobileNumber() { return mobileNumber; }
-        public string GetRentedVehicles() { return rentedVehicles; }
+        
 
         // Mutators / setters (void)
-        public void SetCustomerID (int customerID) {this.customerID = customerID; }
+        public void SetUserID(int userID) {
+
+            // validation
+            if (userID < 0 || userID >= 650) // user cannot provide ID larger than 650 
+            {
+                this.userID = -1; // -1 is indication of the user ID not valid value 
+            } else
+            {
+                this.userID = userID;
+            }
+        }
         public void SetName(string name) { 
             string[] names = name.Split(" "); 
             this.firstname = names[0]; 
             this.lastname= names[1]; }
         public void SetEmail(string email) {this.email = email; }
         public void SetMobileNumber (string mobileNumber) {this.mobileNumber = mobileNumber; }
-        public void SetRentedVehicles (string rentedVehicles) { this.rentedVehicles = rentedVehicles; }
+        
     }
 
 

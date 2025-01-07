@@ -4,45 +4,71 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
+using System.Reflection;
+using Microsoft.VisualBasic;
 
 
 namespace SystemsProgrammingAssignment
 {
     // Rental class will inherit from the vehicle class as it will include all data from the vehicle class and more
-    internal class rental
+    internal class Rental : Vehicle
     {
-
-        private int rentalID;
-        private DateTime rentalStartDate;
-        private DateTime rentalEndDate;
-        private int rentCost;
-        private int deposit;
+        protected DateTime rentalStartDate;
+        protected DateTime rentalEndDate;
+        protected int dailyRate;
+        protected int deposit;
+        protected bool activityStatus;
 
         //Constructor 
-        public rental(int rentalID, DateTime rentalStartDate, DateTime rentalEndDate, int rentCost, int deposit)
+        public Rental(DateTime rentalStartDate, DateTime rentalEndDate, int dailyRate, int deposit, bool activityStatus, int vehicleID, bool availabilityStatus, string make, string model, string colour, string registrationPlate)
         {
-            this.rentalID = rentalID;
             this.rentalStartDate = rentalStartDate;
             this.rentalEndDate = rentalEndDate;
-            this.rentCost = rentCost;
+            this.dailyRate = dailyRate;
             this.deposit = deposit;
+            this.activityStatus = activityStatus;
+
+
+            this.vehicleID = vehicleID;
+            this.availabilityStatus = availabilityStatus;
+            this.make = make;
+            this.model = model;
+            this.colour = colour;
+            this.registrationPlate = registrationPlate;
+        }
+
+        public Rental()
+        {
+
+        }
+
+        public int RentCharge()
+        {
+            // getting the difference between the days of the two dates
+            int rentalLength = (rentalEndDate - rentalStartDate).Days;
+
+            return (rentalLength * dailyRate) + deposit;
         }
 
         // Accessors / getters (include the data type of object)
-        public int GetRentalID() { return rentalID; }
         public DateTime GetStartDate() { return rentalStartDate; }
         public DateTime GetEndDate() { return rentalEndDate; }
-        public int GetCost() { return rentCost; }
+        public int GetDailyRate() { return dailyRate; }
         public int GetDeposit() { return deposit; }
+        public bool GetActivityStatus(bool v) {return activityStatus; }
 
         // Mutators / setters (void)
-        public void SetRentalID(int rentalID) { this.rentalID = rentalID; }
+        //public void SetRentCharge(int RentCharge) { this.RentCharge =  RentCharge; }
         public void SetStartDate(DateTime rentalStartDate) {this.rentalStartDate = rentalStartDate; }
         public void SetEndDate(DateTime rentalEndDate) {this.rentalEndDate = rentalEndDate; }
-        public void SetCost(int rentCost) {this.rentCost = rentCost; }
+        public void SetDailyRate(int dailyRate) {this.dailyRate = dailyRate; }
         public void SetDeposit (int deposit) { this.deposit = deposit; }
+        public void SetActivityStatus (bool activityStatus) { this.activityStatus = activityStatus; }
     }
 }
+
+
 
 /*public string OwnedProjectsNames { get; set; }*/ //names of owned projects
        /* int Start = Convert.ToInt32(rentalStartDate);
