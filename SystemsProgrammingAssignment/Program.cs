@@ -84,14 +84,17 @@ vehicles.Add("599xx evo", new specialVehicle(21, true, "ferrari", "599xx evo", "
 ////////////////////////////////////////////////////////////////////////////////////////////
 // Customers 
 // user can be found via their customer ID
-Dictionary<int, User> users = new Dictionary<int, User>();
+
+////////////////////////////////////////////////////////////////////////////////////////////
+//Delete
+/*Dictionary<int, User> users = new Dictionary<int, User>();
 users.Add(1, new User(1, "John Stone", "johns@gmail.com", "07123582538"));
 users.Add(2, new User(2, "Tim Dents", "timd@gmail.com", "07123537538"));
 
 string NewUser = "NewUser.json";
 string jsonString3 = JsonSerializer.Serialize(users);
-File.WriteAllText(NewUser, jsonString3);
-
+File.WriteAllText(NewUser, jsonString3);*/
+////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Dictionary<int, ExistingUser> returningCustomers = new Dictionary<int, ExistingUser>();
@@ -167,12 +170,13 @@ else
     
 }
 
+// Menu for admin user
 void adminMenu()
 {
     bool AdminMenu = true;
     while (AdminMenu)
     {
-        Console.WriteLine("Welcome back Admin");
+        Console.WriteLine("\nWelcome back Admin\n");
 
         Console.WriteLine("\n1) Display stock list"); //displays list of vehicles
 
@@ -342,6 +346,7 @@ void existingUserMenu()   //[NE1]
     }
 }
 
+// New user menu
 void newUserMenu()
 {
     bool NewUserMenu = true;
@@ -403,7 +408,8 @@ void newUserMenu()
                 break;
 
             case "8":
-                DisplayNewUserInfo();
+                //DisplayNewUserInfo();
+                DisplayUserInfo();
                 break;
 
             case "9":
@@ -438,10 +444,10 @@ void AddUser()
     Random random = new Random();
     int randomID = random.Next(0, 100000);
 
-    users.Add(randomID, new User(randomID, newUserName, newUserEmail, newUserNumber));
-    Console.WriteLine($"\n\nYour ID number is [*{randomID}*]");
+   // users.Add(randomID, new User(randomID, newUserName, newUserEmail, newUserNumber));
 
-    File.WriteAllText(NewUser, jsonString3);
+    returningCustomers.Add(randomID, new ExistingUser(randomID, newUserName, newUserEmail, newUserNumber, new List<Rental>()));
+    Console.WriteLine($"\n\nYour ID number is [*{randomID}*]");
 }
 
 void AddVehicle()
@@ -584,15 +590,6 @@ void DisplayUserInfo()
     ExistingUser selectedCustomer = SearchCustomerID();
 }
 
-void DisplayNewUserInfo()
-{
-
-    User selectedCustomer = SearchNewCustomerID();
-    /*string NewUser = "NewUser.json";
-    string jsonString3 = File.ReadAllText(NewUser);
-    var users = JsonSerializer.Deserialize<Dictionary<int, User>>(jsonString3);*/
-}
-
 void RentalInfo()
 {
     ExistingUser selectedCustomer = SearchCustomerID();
@@ -615,29 +612,6 @@ void RentalInfo()
             DisplayErrorMessage("We could not find a result for your request! \n");
             return;
         }
-    }
-}
-
-User SearchNewCustomerID()
-{
-    User selectedCustomer;
-
-    //ask user for their ID
-    Console.Write("\n Please enter your customer ID: ");
-    int customerSearch = Convert.ToInt32(Console.ReadLine());
-
-    // this allows user to search for vehicle from dictionary 
-    if (users.ContainsKey(customerSearch))
-    {
-        //outputting result
-        selectedCustomer = users[customerSearch];
-        Console.WriteLine($"\nWelcome back: {selectedCustomer.GetName()} \n\n\nCustomer Information: \n\nCustomer ID: {selectedCustomer.GetUserID()} \nEmail: {selectedCustomer.GetEmail()} \nMobile number: {selectedCustomer.GetMobileNumber()}");
-        return selectedCustomer; //returns customer within system
-    }
-    else
-    {
-        DisplayErrorMessage("We could not find a result for your request! \n");
-        return null; //returns nothing 
     }
 }
 
@@ -798,10 +772,16 @@ void RentVehicle()
 {
     ExistingUser selectedCustomer = SearchCustomerID();
 
-    Console.WriteLine("What vehicle make would you like to rent? ");
+    if (selectedCustomer == null)
+    {
+        DisplayErrorMessage("You must enter a valid user ID! ");
+        return;
+    }
+
+    Console.WriteLine("\n\nWhat vehicle make would you like to rent? ");
     string SearchCarMakeToRent = Console.ReadLine().ToLower();
 
-    Console.WriteLine("What vehicle model would you like to rent? ");
+    Console.WriteLine("\nWhat vehicle model would you like to rent? ");
     string SearchCarToRent = Console.ReadLine().ToLower();
 
     // display availability status of vehicle
@@ -816,41 +796,39 @@ void RentVehicle()
         //checks if status is available
         if (selectedVehicle.GetAvailabilityStatus(true))
         {
-            Console.WriteLine("Please enter the end date of the rental: (year/month/day/ hour:minute:second)\n");
-            DateTime extendedDate = Convert.ToDateTime(Console.ReadLine());
+             try
+             {
+                 Console.WriteLine("Please enter the end date of the rental: (year/month/day/ hour:minute:second)\n");
+                 DateTime extendedDate = Convert.ToDateTime(Console.ReadLine());
 
-            //endDate = extendedDate;
-
-            foreach (var r in selectedCustomer.GetRentals())
-            {
-                r.SetEndDate(extendedDate); //sets end date to the date that the user has chosen
-                r.SetStartDate(DateTime.Now); //sets start date to now
-                r.SetModel(SearchCarToRent); //sets model of vehicle
-                r.SetMake(SearchCarMakeToRent); // sets make of vehicle
-                r.SetAvailabilityStatus(false); //sets availability status to unavailable
-                Console.WriteLine($"\nNew Rental info: {r.GetStartDate()} to {r.GetEndDate()}, \nMake: {r.GetMake().ToUpper()} \nModel: {r.GetModel().ToUpper()} \nTotal fee: £{r.RentCharge()}");
-            }
+                 foreach (var r in selectedCustomer.GetRentals())
+                 {
+                     r.SetEndDate(extendedDate); //sets end date to the date that the user has chosen
+                     r.SetStartDate(DateTime.Now); //sets start date to now
+                     r.SetModel(SearchCarToRent); //sets model of vehicle
+                     r.SetMake(SearchCarMakeToRent); // sets make of vehicle
+                     r.SetAvailabilityStatus(false); //sets availability status to unavailable
+                     Console.WriteLine($"\nNew Rental info: {r.GetStartDate()} to {r.GetEndDate()}, \nMake: {r.GetMake().ToUpper()} \nModel: {r.GetModel().ToUpper()} \nTotal fee: £{r.RentCharge()}");
+                 }
+             }
+             catch (FormatException)
+             {
+                 DisplayErrorMessage("Wrong format entered! ");
+             }
         }
         else
         {
             //Make the user aware that the vehicle they have searched for is unavailable.
-            DisplayErrorMessage("The selected vehicle is not available. Please select another vehicle! \n");
-
-            //writes to vehicle list file
-            /* writeVehicleFile();*/
-
-            try
-            {
-                //displays make and model of the car that the user has just returned
-                DisplaySuccessfulMessage($" | {selectedVehicle.GetMake().ToUpper()}: {selectedVehicle.GetModel().ToUpper()} | has been rented! ");
-            }
-            catch (NullReferenceException)
-            {
-                DisplayErrorMessage("We could not find a result for your request! \n");
-                return;
-            }
+            DisplayErrorMessage("\nThe selected vehicle is not available. Please select another vehicle! \n");
         }
     }
+    else
+    {
+        DisplayErrorMessage("We could not find a result for your request! \n");
+        return;
+    }
+
+    Console.WriteLine("\n------------------------------------------------------------------------------");
 }
 
 void DisplayStockList() 
@@ -866,7 +844,9 @@ void DisplayStockList()
         foreach (var car in vehicles)
         {
             // output car info from Tostring within the vehicle class.
-            Console.WriteLine($"{car.Value}");
+            Console.WriteLine("\n------------------------------------------------------------------------------");
+            Console.WriteLine($"\n{car.Value}");
+            Console.WriteLine("\n------------------------------------------------------------------------------");
         }
     }
     catch (FileNotFoundException)
