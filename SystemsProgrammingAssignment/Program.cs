@@ -14,6 +14,8 @@ using System.Dynamic;
 using System.Globalization;
 using System.Xml.Linq;
 using System.Threading.Channels;
+using System.Threading.Tasks;
+using System.Threading;
 using System.Net.NetworkInformation;
 using System.Diagnostics.Metrics;
 using System.ComponentModel;
@@ -259,13 +261,13 @@ void existingUserMenu()   //[NE1]
     while (ExistingUserMenu)
     {
         int processors = Environment.ProcessorCount;
-        Console.WriteLine("This computer has " +  processors + " processors. ");
+        Console.WriteLine("\n\nThis computer has " +  processors + " processors. ");
 
         Console.WriteLine("\nMenu\n");
 
         Console.WriteLine("1) View current rental information. "/*displays: rental period / total cost / daily pay rate, vehicle info*/ +
-            "\n2) Return vehicle" /*asks user to enter name of vehicle details and adds them back into system*/
-            + "\n3) Extend rental period" /*Add x amount of days to remaining time left of rental period*/ +
+            "\n2) Return vehicle" /*asks user to enter name of vehicle details and adds them back into system*/+
+            "\n3) Extend rental period" /*Add x amount of days to remaining time left of rental period*/ +
             "\n4) Make cancellation of rental" /*cancel vehicle rental before end date*/ +
             "\n5) Rent Vehicle" /*updates vehicle data from system as being rented / unavailable*/ +
             "\n6) Search for vehicle" /*displays list of all vehicles*/ +
@@ -662,21 +664,41 @@ void ExtendRentalPeriod()
 {
     ExistingUser selectedCustomer = SearchCustomerID();
 
-    foreach (var r in selectedCustomer.GetRentals())
+    /*foreach (var r in selectedCustomer.GetRentals())
     {
+        var timer = Stopwatch.StartNew();
         Console.WriteLine($"\nCurrent Rental info: {r.GetStartDate()} to {r.GetEndDate()}, \nMake: {r.GetMake().ToUpper()} \nModel: {r.GetModel().ToUpper()} \nTotal fee: £{r.RentCharge()}");
-    }
+        Console.WriteLine("Time taken: " + timer.ElapsedMilliseconds + "ms");
+    }*/
+
+    // Parallel splits the tasks between all processors to make the task run/ output results faster
+    Parallel.ForEach(selectedCustomer.GetRentals(), r =>
+    {
+        var timer = Stopwatch.StartNew();
+        // Displays current rental information
+        Console.WriteLine($"\nCurrent Rental info: {r.GetStartDate()} to {r.GetEndDate()}, \nMake: {r.GetMake().ToUpper()} \nModel: {r.GetModel().ToUpper()} \nTotal fee: £{r.RentCharge()}");
+        Console.WriteLine("Time taken: " + timer.ElapsedMilliseconds + "ms");
+    });
 
     Console.WriteLine("Please enter the extended date: (year/month/day/ hour:minute:second)\n");
     DateTime extendedDate = Convert.ToDateTime(Console.ReadLine());
 
     endDate = extendedDate;
 
-    foreach (var r in selectedCustomer.GetRentals())
+    /*foreach (var r in selectedCustomer.GetRentals())
     {
         r.SetEndDate(extendedDate);
         Console.WriteLine($"\nNew Rental info: {r.GetStartDate()} to {r.GetEndDate()}, \nMake: {r.GetMake().ToUpper()} \nModel: {r.GetModel().ToUpper()} \nTotal fee: £{r.RentCharge()}");
-    }
+    }*/
+
+    Parallel.ForEach(selectedCustomer.GetRentals(), r =>
+    {
+        //Console.WriteLine($"\nCurrent Rental info: {r.GetStartDate()} to {r.GetEndDate()}, \nMake: {r.GetMake().ToUpper()} \nModel: {r.GetModel().ToUpper()} \nTotal fee: £{r.RentCharge()}");
+        var timer2 = Stopwatch.StartNew();
+        r.SetEndDate(extendedDate);
+        Console.WriteLine($"\nNew Rental info: {r.GetStartDate()} to {r.GetEndDate()}, \nMake: {r.GetMake().ToUpper()} \nModel: {r.GetModel().ToUpper()} \nTotal fee: £{r.RentCharge()}");
+        Console.WriteLine("Time taken: " + timer2.ElapsedMilliseconds + "ms");
+    });
 }
 
 void SearchForVehicle()
@@ -741,28 +763,28 @@ void CancelRental()
     {
         if (confirmCancellation == "yes")
         {
+            Console.WriteLine("Please wait two seconds...");
             r.SetActivityStatus(false);
-            DateTime cancelStartDate = DateTime.MinValue;
-            DateTime cancelEndDate = DateTime.MinValue;
-            string rentalInfoCleared = ("n/a");
-            int rentalChargeCleared = 0;
+            DateTime cancelEndDate = DateTime.Now; // sets rental end date to the current date.
+            string rentalInfoCleared = ("n/a");    // clears current model and make.
+            int rentalChargeCleared = 0;           // sets rental charge to zero.
 
-            r.SetStartDate(cancelStartDate);
             r.SetEndDate(cancelEndDate);
             r.SetMake(rentalInfoCleared);
             r.SetModel(rentalInfoCleared);
-            //r.RentCharge() = 0;
-            Console.WriteLine($"\nRental Status: Inactive \nNew Rental info: {r.GetStartDate()} to {r.GetEndDate()}, \nMake: {r.GetMake().ToUpper()} \nModel: {r.GetModel().ToUpper()} \nTotal fee: £{rentalChargeCleared}");
+            Thread.Sleep(2000); //Waits 2000 milliseconds
+
+            Console.WriteLine($"\nCancellation complete...\n\nRental Status: Inactive \nNew Rental info: {r.GetStartDate()} to {r.GetEndDate()}, \nMake: {r.GetMake().ToUpper()} \nModel: {r.GetModel().ToUpper()} \nTotal fee: £{rentalChargeCleared}");
         }
-    }
-    if (confirmCancellation == "no") 
-    {
-        return;
-    }
-    else
-    {
-        Console.WriteLine("ERROR: Result not found! ");
-        return;
+        else if (confirmCancellation == "no") 
+        {
+            return;
+        }
+        else
+        {
+            Console.WriteLine("ERROR: Result not found! ");
+            return;
+        }
     }
 }
 

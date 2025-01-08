@@ -76,7 +76,7 @@
 // binary write (bw), binary read (br) (store data of customers) (binary allows data to be encrypted) [NWE]
 
 #WEEK10- Using Multiple Processors
-// Stopwatch?? | StartNew|   AsParallel (faster than foreach becuase it uses multiple processors) |  .ElapsedMilliseconds|   .Next  (using multiple processors)  [TWE]
+// \\\Stopwatch?? | StartNew|   AsParallel (faster than foreach becuase it uses multiple processors) |  .ElapsedMilliseconds|   .Next  (using multiple processors)  [TWE]
 // .parallel
 // caching
 
