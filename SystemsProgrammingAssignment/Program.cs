@@ -178,11 +178,11 @@ void adminMenu()
 
         Console.WriteLine("\n2) Display all customer and rental info ");
 
-        Console.WriteLine("\n) Add vehicle to system"); //Adds vehicle to the dictionary and list of vehicles
+        Console.WriteLine("\n3) Add vehicle to system"); //Adds vehicle to the dictionary and list of vehicles
 
-        Console.WriteLine("\n) Add customer to system"); //Adds customer to the list of customers
+        Console.WriteLine("\n4) Add customer to system"); //Adds customer to the list of customers
 
-        Console.WriteLine("Q) Quit \n");
+        Console.WriteLine("\n\nQ) Quit \n");
 
         Console.Write("Enter your choice: ");
         string choice = Console.ReadLine().ToLower();
@@ -210,7 +210,7 @@ void adminMenu()
                 break;
 
             default:
-                Console.WriteLine("ERROR: unknown input!");
+                DisplayErrorMessage("Unknown input!");
                 break;
         }
     }
@@ -439,7 +439,7 @@ void AddUser()
     int randomID = random.Next(0, 100000);
 
     users.Add(randomID, new User(randomID, newUserName, newUserEmail, newUserNumber));
-    Console.WriteLine($"Your ID number is {randomID}");
+    Console.WriteLine($"\n\nYour ID number is [*{randomID}*]");
 
     File.WriteAllText(NewUser, jsonString3);
 }
@@ -452,7 +452,7 @@ void AddVehicle()
     Console.WriteLine("Vehicle ID: ");
     int VID = Convert.ToInt32(Console.ReadLine());
 
-    Console.WriteLine("\nAvailability Status: ");
+    Console.WriteLine("\nAvailability Status (true | false): ");
     bool availability = Convert.ToBoolean(Console.ReadLine());
 
     Console.WriteLine("\nMake: ");
@@ -464,10 +464,10 @@ void AddVehicle()
     Console.WriteLine("\nColour: ");
     string colour = Console.ReadLine().ToLower();
 
-    Console.WriteLine("\nRegistration Plate: ");
+    Console.WriteLine("\nRegistration Plate (format: XX99XXX): ");
     string registrationPlate = Console.ReadLine().ToLower();
 
-    Console.WriteLine("\nAcceleration: ");
+    Console.WriteLine("\nAcceleration (0-60 seconds): ");
     float acceleration = Convert.ToSingle(Console.ReadLine());
 
     Console.WriteLine("\nPower (BHP): ");
@@ -488,40 +488,45 @@ void AddVehicle()
     Console.WriteLine("\nWeight (KG): ");
     float weight = Convert.ToSingle(Console.ReadLine());
 
-    Console.WriteLine("\nDrive Train: ");
+    Console.WriteLine("\nDrive Train (FWD/ RWD/ 4WD): ");
     string driveTrain = Console.ReadLine().ToLower();
 
-    Console.WriteLine("\nFuel Type: ");
+    Console.WriteLine("\nFuel Type (petrol/ diesel/ hybrid/ electric): ");
     string fuelType = Console.ReadLine().ToLower();
 
     Console.WriteLine("\nEngine Size: ");
     float engineSize = Convert.ToSingle(Console.ReadLine());
 
-    Console.WriteLine("\nTransmission: ");
+    Console.WriteLine("\nTransmission (automatic/ manual/ semi-automatic): ");
     string transmission = Console.ReadLine().ToLower();
 
     Console.WriteLine("\nSeat Capacity: ");
     int seatCapacity = Convert.ToInt32(Console.ReadLine());
 
-    Console.WriteLine("\nFuel Capacity: ");
+    Console.WriteLine("\nFuel Capacity (average is 50L): ");
     int fuelCapacity = Convert.ToInt32(Console.ReadLine());
 
-    Console.WriteLine("\nWeight Capacity: ");
+    Console.WriteLine("\nWeight Capacity (what weight the vehicle can carry): ");
     int weightCapacity = Convert.ToInt32(Console.ReadLine());
 
-    Console.WriteLine("\nLoad Capacity: ");
+    Console.WriteLine("\nLoad Capacity (the volume the vehicle can load): ");
     int loadCapacity = Convert.ToInt32(Console.ReadLine());
 
     Console.WriteLine("\nYear: ");
     int year = Convert.ToInt32(Console.ReadLine());
 
-    Console.WriteLine("\nVehicle Type: ");
+    Console.WriteLine("\nVehicle Type (sports/ classic etc): ");
     string vehicleType = Console.ReadLine().ToLower();
 
-    Console.WriteLine("\nFeatures: ");
+    Console.WriteLine("\nFeatures (e.g. heated seats/ digital radio): ");
     string features = Console.ReadLine().ToLower();
 
+    Console.WriteLine("Please wait two seconds...\n\n");
+    Thread.Sleep(2000); //Waits 2000 milliseconds
+    DisplaySuccessfulMessage("Vehicle was added to the system! ");
+    //Console.WriteLine("");
     vehicles.Add(model, new Vehicle(VID, availability, make, model, colour, registrationPlate, acceleration, power, mileage, fuelEconomy, topSpeed, doors, weight, driveTrain, fuelType, engineSize, transmission, seatCapacity, fuelCapacity, weightCapacity, loadCapacity, year, vehicleType, features));
+
 }
 
 void ReturnVehicle()
@@ -541,7 +546,7 @@ void ReturnVehicle()
         //checks if status is available
         if (selectedVehicle.GetAvailabilityStatus(true)) 
         { 
-            Console.WriteLine("This vehicle is already available. Therefore, it cannot be returned."); 
+            DisplayErrorMessage("This vehicle is already available. Therefore, it cannot be returned.");
         }
         else {
             //if status is unavailable, it changes it to being available as the customer has just returned it.
@@ -553,11 +558,11 @@ void ReturnVehicle()
             try 
             {
                 //displays make and model of the car that the user has just returned
-                Console.WriteLine($"\nThank you! The | {selectedVehicle.GetMake().ToUpper()}: {selectedVehicle.GetModel().ToUpper()} | has successfully been returned ");
-
-            }catch (NullReferenceException)
+                DisplaySuccessfulMessage($"The | {selectedVehicle.GetMake().ToUpper()}: {selectedVehicle.GetModel().ToUpper()} | has been returned ");
+            }
+            catch (NullReferenceException)
             {
-                Console.WriteLine("We could not find a result for your request! ");
+                DisplayErrorMessage("We could not find a result for your request! \n");
                 return;
             }
         }
@@ -595,7 +600,7 @@ void RentalInfo()
     foreach (var r in selectedCustomer.GetRentals())
     {
 
-            Console.WriteLine($"\nRental info: ");
+        Console.WriteLine($"\nRental info: ");
 
         if (r.GetActivityStatus(true))
         {
@@ -607,7 +612,7 @@ void RentalInfo()
         }
         else
         {
-            Console.WriteLine("ERROR: Result not found! ");
+            DisplayErrorMessage("We could not find a result for your request! \n");
             return;
         }
     }
@@ -631,7 +636,7 @@ User SearchNewCustomerID()
     }
     else
     {
-        Console.WriteLine("We could not find a result on our system! \n");
+        DisplayErrorMessage("We could not find a result for your request! \n");
         return null; //returns nothing 
     }
 }
@@ -655,7 +660,7 @@ ExistingUser SearchCustomerID()
     }
     else
     {
-        Console.WriteLine("We could not find a result on our system! \n");
+        DisplayErrorMessage("We could not find a result for your request! \n");
         return null; //returns nothing 
     }
 }
@@ -736,17 +741,17 @@ void SearchForVehicle()
             Console.WriteLine($"Statistics: \nAcceleration (0-60): {selectedVehicle.GetAcceleration()}  seconds \nPower: {selectedVehicle.GetPower()}  horsepower \nMileage: {selectedVehicle.GetMileage()}  miles \nFuel Economy: {selectedVehicle.GetFuelEconomy()}  mpg \nTop speed: {selectedVehicle.GetTopSpeed()}  mph \nNumber of doors: {selectedVehicle.GetDoors()} \nWeight of vehicle: {selectedVehicle.GetWeight()} kg \nDrivetrain: {selectedVehicle.GetDriveTrain()} \n Fuel Type: {selectedVehicle.GetFuelType()} \nEngine size: {selectedVehicle.GetEngineSize()} L \nTransmission type: {selectedVehicle.GetTransmission()} \nSeat capacity: {selectedVehicle.GetSeatCapacity()} \nFuel capacity: {selectedVehicle.GetFuelCapacity()}L \nWeight capacity: {selectedVehicle.GetWeightCapacity()} kg \nLoad capacity: {selectedVehicle.GetLoadCapacity()} cubic feet \nManufacturing year: {selectedVehicle.GetYear()} \nVehicle type: {selectedVehicle.GetVehicleType()} \nFeatures: {selectedVehicle.GetFeatures()}");
         }
         else if (DisplayStats == "no")
-            {
-                //do not print out stats and continue with program
-                return;
-            }
-        }
-        else
         {
-            Console.WriteLine("We could not find a result for your request! \n");
+            //do not print out stats and continue with program
             return;
         }
-        Console.WriteLine("\n------------------------------------------------------------------------------");
+    }
+    else
+    {
+        DisplayErrorMessage("We could not find a result for your request! \n");
+        return;
+    }
+    Console.WriteLine("\n------------------------------------------------------------------------------");
 }
 
 void CancelRental()
@@ -763,7 +768,7 @@ void CancelRental()
     {
         if (confirmCancellation == "yes")
         {
-            Console.WriteLine("Please wait two seconds...");
+            Console.WriteLine("Please wait two seconds...\n");
             r.SetActivityStatus(false);
             DateTime cancelEndDate = DateTime.Now; // sets rental end date to the current date.
             string rentalInfoCleared = ("n/a");    // clears current model and make.
@@ -774,7 +779,8 @@ void CancelRental()
             r.SetModel(rentalInfoCleared);
             Thread.Sleep(2000); //Waits 2000 milliseconds
 
-            Console.WriteLine($"\nCancellation complete...\n\nRental Status: Inactive \nNew Rental info: {r.GetStartDate()} to {r.GetEndDate()}, \nMake: {r.GetMake().ToUpper()} \nModel: {r.GetModel().ToUpper()} \nTotal fee: £{rentalChargeCleared}");
+            DisplaySuccessfulMessage($"Cancellation complete...\n\nRental Status: Inactive \nNew Rental info: {r.GetStartDate()} to {r.GetEndDate()}, \nMake: {r.GetMake().ToUpper()} \nModel: {r.GetModel().ToUpper()} \nTotal fee: £{rentalChargeCleared}");
+
         }
         else if (confirmCancellation == "no") 
         {
@@ -782,7 +788,7 @@ void CancelRental()
         }
         else
         {
-            Console.WriteLine("ERROR: Result not found! ");
+            DisplayErrorMessage("Result not found! ");
             return;
         }
     }
@@ -828,7 +834,7 @@ void RentVehicle()
         else
         {
             //Make the user aware that the vehicle they have searched for is unavailable.
-            Console.WriteLine("The selected vehicle is not available. Please select another vehicle!");
+            DisplayErrorMessage("The selected vehicle is not available. Please select another vehicle! \n");
 
             //writes to vehicle list file
             /* writeVehicleFile();*/
@@ -836,19 +842,18 @@ void RentVehicle()
             try
             {
                 //displays make and model of the car that the user has just returned
-                Console.WriteLine($"\nThank you! | {selectedVehicle.GetMake().ToUpper()}: {selectedVehicle.GetModel().ToUpper()} | has successfully been rented! ");
-
+                DisplaySuccessfulMessage($" | {selectedVehicle.GetMake().ToUpper()}: {selectedVehicle.GetModel().ToUpper()} | has been rented! ");
             }
             catch (NullReferenceException)
             {
-                Console.WriteLine("We could not find a result for your request! ");
+                DisplayErrorMessage("We could not find a result for your request! \n");
                 return;
             }
         }
     }
 }
 
-void DisplayStockList()
+void DisplayStockList() 
 {
     Console.WriteLine("\nVehicle list");
 
@@ -866,7 +871,7 @@ void DisplayStockList()
     }
     catch (FileNotFoundException)
     {
-        Console.WriteLine("The required file was not found! ");
+        DisplayErrorMessage("The required file was not found!");
     }
 }
 
@@ -877,7 +882,7 @@ void TotalVehicleCount()
 
 void SearchVehicleAvailability()
 {
-    Console.WriteLine("Search for vehicle availability: \n");
+    Console.WriteLine("Search for vehicle (model) availability: \n");
     string AvailableCar = Console.ReadLine().ToLower();
 
     // use the GetAvailabilityStatus to find available vehicles and return the vehicles which == true
@@ -894,7 +899,8 @@ void SearchVehicleAvailability()
     }
     else
     {
-        Console.WriteLine("ERROR: Result not found! ");
+        
+        DisplayErrorMessage("Result not found!");
          return;
     }
 }
@@ -976,5 +982,24 @@ void Contact()
     Console.WriteLine("\n\nContact Info: \n\nEmail: declanrentals@hotmail.com \nTelephone Number: 07 123 456 789 \nAddress: 826 Boulevard Road");
 }
 
+void DisplaySuccessfulMessage(string message)
+{
+    // Display successful message in the colour green.
+    ConsoleColor beforeRed = Console.ForegroundColor;
+    Console.ForegroundColor = ConsoleColor.Green;
+    Console.Write("Successful! ");
+    Console.ForegroundColor = beforeRed;
+    Console.WriteLine(message);
+}
+
+void DisplayErrorMessage(string message)
+{
+    // Display successful message in the colour green.
+    ConsoleColor beforeRed = Console.ForegroundColor;
+    Console.ForegroundColor = ConsoleColor.Red;
+    Console.Write("ERROR! ");
+    Console.ForegroundColor = beforeRed;
+    Console.WriteLine(message);
+}
 
 //view unique vehicles (pull dictionary into hashlist?)
