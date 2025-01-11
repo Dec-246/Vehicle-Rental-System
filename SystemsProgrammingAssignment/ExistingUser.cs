@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace SystemsProgrammingAssignment
 {
-    // existing (returning) user inherits from customer because they have all the same values that a normal customer would have 
+    // existing (returning) user inherits from customer (user) because they have all the same values that a normal customer would have 
     // existing user would contain all the values from rental because they will likely have past rental history.
     internal class ExistingUser : User
 	{
@@ -61,32 +61,3 @@ namespace SystemsProgrammingAssignment
             return "\n\nExisting user: " + "\nID: " + GetUserID() + "\nName: " + GetName() + "\nEmail: " + GetEmail() + "\nMobile: " + GetMobileNumber() + "\nRentals: " + GetRentals(); }
         }
 }
-
-
-
-
-
-            // override indicates that this functionality is some sort of virtual function. you need to decide which kind of object is stored when you use this function.
-/*        public override void WriteBinary(BinaryWriter bw)
-        {
-            bw.Write("Customer");
-            bw.Write(customerId);
-            bw.Write(name);
-            bw.Write(email);
-            bw.Write(mobileNumber);
-            bw.Write(rentedVehicles);
-        }
-
-        public override void ReadBinary(BinaryReader br)
-        {
-            this.customerId = br.ReadInt32();
-            this.name = br.ReadString();
-            this.email = br.ReadString();
-            this.mobileNumber = br.ReadString();
-            this.rentedVehicles = br.ReadString();
-        }
-
-        public override string ToString()
-        {
-            return "\n\nCustomer: " + "\nID: " + CustomerID + "\nName: " + name + "\Email: " + email + "\nMobile Number: " + mobileNumber + "\nRented Vehicles: " + rentedVehicles ;
-        }*/

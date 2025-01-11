@@ -1,10 +1,7 @@
 ﻿using System;
 
 namespace SystemsProgrammingAssignment
-{
-	//create a dictionary of car stats| the user searches for model, the vehicle class info and stat info is displayed 
-
-	//organise all stats into this class from the vehicle class 
+{ 
 	public class Statistics
 	{
         protected float acceleration; //0-60 seconds
@@ -26,11 +23,6 @@ namespace SystemsProgrammingAssignment
         protected string vehicleType; //super/ sports/ classic/ vans/ tanks/ helicopters/ 
         protected string features; //special features which separates this from the rest 
 
-		/*public int mileage
-		{
-			get { return mileage(); }
-			set { mileage = value; }
-			}*/
         //Constructor
         public Statistics(float acceleration, int power, int mileage, int fuelEconomy, int topSpeed, int doors, float weight, string driveTrain, string fuelType, float engineSize, string transmission, int seatCapacity, int fuelCapacity, int weightCapacity, int loadCapacity, int year, string vehicleType, string features)
 	{

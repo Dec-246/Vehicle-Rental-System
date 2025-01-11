@@ -31,11 +31,6 @@ namespace SystemsProgrammingAssignment
 
         }
 
-        /*public string DisplayUserInfo()
-        {
-            return $"ID: {GetUserID()} \nName: {GetName()} \nEmail: {GetEmail()} \nMobile Number: {GetMobileNumber()}";
-        }*/
-
 
         // Accessors / getters (include the data type of object)
         public int GetUserID() { return userID; }
@@ -67,50 +62,3 @@ namespace SystemsProgrammingAssignment
 
 
 }
-
-        /*public override void WriteBinary(BinaryWriter bw)
-        {
-            bw.Write("Customer");
-            bw.Write(customerId);
-            bw.Write(name);
-            bw.Write(email);
-            bw.Write(mobileNumber);
-            bw.Write(rentedVehicles);
-
-            bw.Write("\n\nVehice");
-            bw.Write(vehicleID);
-            bw.Write(availabilityStatus);
-            bw.Write(make);
-            bw.Write(model);
-            bw.Write(year);
-            bw.Write(mileage);
-            bw.Write(fuelType);
-            bw.Write(transmission);
-            bw.Write(capacity);
-        }
-
-        public override void ReadBinary(BinaryReader br)
-        {
-            
-
-            this.customerId = br.ReadInt32();
-            this.name = br.ReadString();
-            this.email = br.ReadString();
-            this.mobileNumber = br.ReadString();
-            this.rentedVehicles = br.ReadString();
-
-            this.vehicleID = br.ReadInt32();
-            this.availabilityStatus = br.ReadBoolean();
-            this.make = br.ReadString();
-            this.model = br.ReadString();
-            this.year = br.ReadInt32();
-            this.mileage = br.ReadInt32();
-            this.fuelType = br.ReadString();
-            this.transmission = br.ReadString();
-            this.capacity = br.ReadInt32();
-        }
-
-        public override string ToString()
-        {
-            return "\n\nCustomer: " + "\nID: " + CustomerID + "\nName: " + name + "\Email: " + email + "\nMobile Number: " + mobileNumber + "\nRented Vehicles: " + rentedVehicles + "\nVehicle ID: " + vehicleID + "\nName: " + Name + "\nYear: " + year + "\nMileage: " + mileage + "\nAvailability Status: " + availabilityStatus;
-        }*/

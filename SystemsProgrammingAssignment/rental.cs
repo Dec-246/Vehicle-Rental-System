@@ -59,7 +59,6 @@ namespace SystemsProgrammingAssignment
         public bool GetActivityStatus(bool v) {return activityStatus; }
 
         // Mutators / setters (void)
-        //public void SetRentCharge(int RentCharge) { this.RentCharge =  RentCharge; }
         public void SetStartDate(DateTime rentalStartDate) {this.rentalStartDate = rentalStartDate; }
         public void SetEndDate(DateTime rentalEndDate) {this.rentalEndDate = rentalEndDate; }
         public void SetDailyRate(int dailyRate) {this.dailyRate = dailyRate; }
@@ -67,67 +66,3 @@ namespace SystemsProgrammingAssignment
         public void SetActivityStatus (bool activityStatus) { this.activityStatus = activityStatus; }
     }
 }
-
-
-
-/*public string OwnedProjectsNames { get; set; }*/ //names of owned projects
-       /* int Start = Convert.ToInt32(rentalStartDate);
-        int End = Convert.ToInt32(rentalEndDate);
-
-        public override void WriteBinary(BinaryWriter bw)
-        {
-            bw.Write("Rental");
-            bw.Write(rentalID);
-            bw.Write(Start);
-            bw.Write(End);
-            bw.Write(rentCost);
-
-            bw.Write("\n\nVehice");
-            bw.Write(vehicleID);
-            bw.Write(availabilityStatus);
-            bw.Write(make);
-            bw.Write(model);
-            bw.Write(year);
-            bw.Write(mileage);
-            bw.Write(fuelType);
-            bw.Write(transmission);
-            bw.Write(capacity);
-        }
-
-        public override void ReadBinary(BinaryReader br)
-        {
-            this.rentalID = br.ReadInt32();
-            this.Start = br.ReadInt32();
-            this.End = br.ReadInt32();
-            this.rentCost = br.ReadInt32();
-
-            this.vehicleID = br.ReadInt32();
-            this.availabilityStatus = br.ReadBoolean();
-            this.make = br.ReadString();
-            this.model = br.ReadString();
-            this.year = br.ReadInt32();
-            this.mileage = br.ReadInt32();
-            this.fuelType = br.ReadString();
-            this.transmission = br.ReadString();
-            this.capacity = br.ReadInt32();
-        }
-
-        public override string ToString()
-        {
-            return "\n\nCustomer: " + "\nID: " + rentalID + "\nRental Start Date: " + Start + "\nRental End Date: " + End + "\nRental Cost: " + rentCost + "\nVehicle ID: " + vehicleID + "\nName: " + Name + "\nYear: " + year + "\nMileage: " + mileage + "\nAvailability Status: " + availabilityStatus;
-        }*/
-
-
-
-//example
-/*public override void WriteBinary(BinaryWriter bw)
-{
-    bw.Write("SeniorEngineer");
-    bw.Write(Id);
-    bw.Write(Name);
-    bw.Write(Salary);
-    bw.Write(OwnedProjectsNames);
-    bw.Write(ProjectsOwnedNum);
-    bw.Write(Contacts);
-    bw.Write(BonusSalary);
-}*/

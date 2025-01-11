@@ -14,7 +14,7 @@ namespace SystemsProgrammingAssignment
 {
 	public class Vehicle : Statistics
     {
-        //protected allows deriving class to access things in base class | this is used to inherit class objects into another class
+        //protected allows deriving class to access objects in base class | this is used to inherit class objects into another class
         protected int vehicleID;
         protected bool availabilityStatus;
         protected string make;
@@ -25,6 +25,7 @@ namespace SystemsProgrammingAssignment
         // constructor
         public Vehicle(int vehicleID, bool availabilityStatus, string make, string model, string colour, string registrationPlate, float acceleration, int power, int mileage, int fuelEconomy, int topSpeed, int doors, float weight, string driveTrain, string fuelType, float engineSize, string transmission, int seatCapacity, int fuelCapacity, int weightCapacity, int loadCapacity, int year, string vehicleType, string features)
         {
+            // Objects from vehicle class
             this.vehicleID = vehicleID;
 			this.availabilityStatus = availabilityStatus;
 			this.make = make;
@@ -32,6 +33,7 @@ namespace SystemsProgrammingAssignment
 			this.colour = colour;
 			this.registrationPlate = registrationPlate;
 
+            // Objects from statistics class
             this.acceleration = acceleration;
             this.power = power;
             this.mileage = mileage;
@@ -83,91 +85,6 @@ namespace SystemsProgrammingAssignment
 		public void SetModel (string model) {this.model = model;}
 		public void SetColour (string colour) {this.colour = colour;}
 		public void SetRegistrationPlate (string registrationPlate) { this.registrationPlate = registrationPlate;}
-
-
-
-        /*public override string ToString()
-        {
-            return "\n\n\nVehicle: " +
-                "\n\nBasic details: " + 
-                "\nID: " + GetVehicleID() + 
-                "\nAvailability: " + GetAvailabilityStatus(true) + 
-                "\nMake: " + GetMake() + 
-                "\nModel: "+ GetModel() + 
-                "\nColour: " + GetColour()+
-                "\nRegistration Plate: "+GetRegistrationPlate() + 
-                "\n\nSpecifications: " + "\nAcceleration (0-60): " + GetAcceleration() + " seconds" + 
-                "\nPower: " + GetPower()+" BHP"+ 
-                "\nMileage: " + GetMileage() + " miles"+
-                "\nFuel Economy: " + GetFuelEconomy()+ " MPG"+
-                "\nTop speed: " + GetTopSpeed()+" MPH" +
-                "\nNumber of doors: " + GetDoors()+
-                "\nWeight of vehicle: " + GetWeight() + " kg"+
-                "\nDrivetrain: " + GetDriveTrain()+
-                "\nFuel Type: " + GetFuelType() +
-                "\nEngine size: " + GetEngineSize() + "L"+
-                "\nTransmission type: " + GetTransmission()+
-                "\nSeat capacity: " + GetSeatCapacity()+
-                "\nFuel capacity: " + GetFuelCapacity() + "L"+
-                "\nWeight capacity: " + GetWeightCapacity() + " kg"+
-                "\nLoad capacity: " + GetLoadCapacity() + " cubic feet"+
-                "\nManufacturing year: " + GetYear()+
-                "\nVehicle type: " + GetVehicleType()+
-                "\nFeatures: " + GetFeatures()
-                ;
-        }*/
-
-        /*public abstract void WriteBinary(BinaryWriter bw);
-        public abstract void ReadBinary(BinaryReader br);*/
-        /*vehicleID 
-        availabilityStatus
-        make 
-        model
-        colour 
-        registrationPlate*/
-
-        //public abstract void WriteBinary(BinaryWriter bw);
-        //public abstract void ReadBinary(BinaryReader br);
-
-        /*public override void WriteBinary(BinaryWriter bw)
-        {
-            *//*bw.Write("Special Vehicle");
-            bw.Write(specialVehicleID);
-            bw.Write(vehicleType);
-            bw.Write(features);*//*
-
-            bw.Write("\n\nVehice");
-            bw.Write(vehicleID);
-            bw.Write(availabilityStatus);
-            bw.Write(make);
-            bw.Write(model);
-            *//*bw.Write(year);
-            bw.Write(mileage);
-            bw.Write(fuelType);
-            bw.Write(transmission);
-            bw.Write(capacity);*//*
-        }*/
-
-       /* public override void ReadBinary(BinaryReader br)
-        {
-            *//*this.specialVehicleID = br.ReadInt32();
-            this.vehicleType = br.ReadString();
-            this.features = br.ReadString();*//*
-
-            this.vehicleID = br.ReadInt32();
-            this.availabilityStatus = br.ReadBoolean();
-            this.make = br.ReadString();
-            this.model = br.ReadString();
-    
-            *//*this.year = br.ReadInt32();
-            this.mileage = br.ReadInt32();
-            this.fuelType = br.ReadString();
-            this.transmission = br.ReadString();
-            this.capacity = br.ReadInt32();*//*
-        }*/
-
-        
-
 
         public override string ToString()
         {

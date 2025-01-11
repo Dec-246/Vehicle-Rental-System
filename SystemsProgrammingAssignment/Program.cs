@@ -21,6 +21,7 @@ using System.Diagnostics.Metrics;
 using System.ComponentModel;
 using System.Runtime.Intrinsics.X86;
 using System.Reflection.Metadata;
+using System.Text;
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 ///Dictionary | vehicles
@@ -34,6 +35,10 @@ vehicles.Add("mondeo",  new Vehicle(2, false, "ford", "mondeo", "red", "xs19 tye
 vehicles.Add("mustang", new Vehicle(3, false, "ford", "mustang", "red", "xs19 tye", 6.7f, 150, 200000, 50, 110, 5, 1500, "fwd", "petrol", 2.7f, "manual", 4, 50, 100, 90, 2024, "sedan", "digital radio"));
 vehicles.Add("gt",      new Vehicle(4, true, "ford", "gt", "red", "xs19 tye", 6.7f, 150, 20000, 50, 110, 5, 1500, "fwd", "petrol", 2.7f, "manual", 4, 50, 100, 90, 2023, "sports", "digital radio"));
 vehicles.Add("f-150",   new Vehicle(5, false, "ford", "f-150", "red", "xs19 tye", 6.7f, 150, 2000, 50, 110, 5, 1500, "fwd", "petrol", 2.7f, "manual", 4, 50, 100, 90, 2022, "truck", "digital radio"));
+
+
+vehicles.Add("polo", new Vehicle(5, false, "volkswagen", "polo", "red", "cv23 tye", 6.7f, 150, 2000, 50, 110, 5, 1500, "fwd", "petrol", 2.7f, "manual", 4, 50, 100, 90, 2022, "truck", "digital radio"));
+vehicles.Remove("polo");
 
 
 /////////////////////////////////////////////////////////////////////
@@ -81,23 +86,9 @@ vehicles.Add("transporter", new specialVehicle(20, true,  "volksWagen",   "trans
 vehicles.Add("599xx evo", new specialVehicle(21, true, "ferrari", "599xx evo", "petrol", 6.0f, "manual", 2, 2012, "red", "cv12 amb", 21, "track", "high-performance"));*/
 
 
-////////////////////////////////////////////////////////////////////////////////////////////
-// Customers 
-// user can be found via their customer ID
-
-////////////////////////////////////////////////////////////////////////////////////////////
-//Delete
-/*Dictionary<int, User> users = new Dictionary<int, User>();
-users.Add(1, new User(1, "John Stone", "johns@gmail.com", "07123582538"));
-users.Add(2, new User(2, "Tim Dents", "timd@gmail.com", "07123537538"));
-
-string NewUser = "NewUser.json";
-string jsonString3 = JsonSerializer.Serialize(users);
-File.WriteAllText(NewUser, jsonString3);*/
-////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Dictionary<int, ExistingUser> returningCustomers = new Dictionary<int, ExistingUser>();
+Dictionary<int, ExistingUser> returningCustomers = new Dictionary<int, ExistingUser>(10000);
 returningCustomers.Add(1, new ExistingUser(1, "Timothy Roscoe", "TimRos@gmail.com", "07 123 456 789", new List<Rental>()));
 returningCustomers.Add(2, new ExistingUser(2, "John Siletto", "JohnS@gmail.com", "07 123 456 789", new List<Rental>()));
 
@@ -120,18 +111,6 @@ string CustomReturn = "returningCustomers.json";
 string jsonString2 = JsonSerializer.Serialize(returningCustomers);
 File.WriteAllText(CustomReturn, jsonString2);
 
-
-//[SW3] hashlist of users?
-// add users id to haslist- makes users unique
-
-////////////////////////////////////////////////////////////////////////////////////////////
-//Introduction
-//ask user for name and welcome them [output users name]
-
-// ask user for their user ID- this will search from dictionary of customers (this will be stored in binary file)
-// the users email will be displayed and ask the user whether this is correct, will then display the rest of users info
-
-
 foreach (string arg in args)
 {
     Console.WriteLine(arg);
@@ -142,15 +121,34 @@ if (args.Length == 1)
     if (args[0] == "--adminmode")
     {
         //admin mode
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.Append("Welcome");
+        stringBuilder.Append(" back");
+        stringBuilder.Append(" Admin.\n");
+        Console.WriteLine(stringBuilder);
         adminMenu();
     }
     if (args[0] == "--existingusermode")
     {
         //user mode
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.Append("Welcome");
+        stringBuilder.Append(" back");
+        stringBuilder.Append(" to");
+        stringBuilder.Append(" the");
+        stringBuilder.Append(" Vehicle Rental system.");
+        Console.WriteLine(stringBuilder);
         existingUserMenu();
     } 
     else if (args[0] == "--newusermode")
     {
+        //new user mode
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.Append("Welcome");
+        stringBuilder.Append(" to");
+        stringBuilder.Append(" the");
+        stringBuilder.Append(" Vehicle Rental System.\n");
+        Console.WriteLine(stringBuilder);
         newUserMenu();
     }
     else if (args[0] == "--help")
@@ -176,8 +174,6 @@ void adminMenu()
     bool AdminMenu = true;
     while (AdminMenu)
     {
-        Console.WriteLine("\nWelcome back Admin\n");
-
         Console.WriteLine("\n1) Display stock list"); //displays list of vehicles
 
         Console.WriteLine("\n2) Display all customer and rental info ");
@@ -226,8 +222,6 @@ void DisplayUserRentalInfo()
         foreach (KeyValuePair<int, ExistingUser> user in returningCustomers)
         {
             Console.WriteLine("\n------------------------------------------------------------------------------");
-
-            //Console.WriteLine($"Customer Info:\n \nCustomer ID: {user.Value.GetUserID()} \nName: {user.Value.GetName()} \nEmail: {user.Value.GetEmail()} \nMobile Number: {user.Value.GetMobileNumber()}");
 
             List<Rental> rentals = user.Value.GetRentals();
 
@@ -540,41 +534,33 @@ void ReturnVehicle()
     Console.WriteLine("Please enter the name of the vehicle that you want to return!");
     string VehicleReturn = Console.ReadLine().ToLower();
 
-    // display availability status of vehicle
-    if (vehicles.ContainsKey(VehicleReturn))
-    {
-        Vehicle selectedVehicle;
-        selectedVehicle = vehicles[VehicleReturn];
+
+   // display availability status of vehicle
+   if (vehicles.ContainsKey(VehicleReturn))
+   {
+       Vehicle selectedVehicle;
+       selectedVehicle = vehicles[VehicleReturn];
+
 
         //reads file from vehicle list 
         readVehicleFile();
-
-        //checks if status is available
-        if (selectedVehicle.GetAvailabilityStatus(true)) 
-        { 
-            DisplayErrorMessage("This vehicle is already available. Therefore, it cannot be returned.");
-        }
-        else {
-            //if status is unavailable, it changes it to being available as the customer has just returned it.
-            selectedVehicle.SetAvailabilityStatus(true);
-
-            //writes to vehicle list file
-           /* writeVehicleFile();*/
-
-            try 
-            {
-                //displays make and model of the car that the user has just returned
-                DisplaySuccessfulMessage($"The | {selectedVehicle.GetMake().ToUpper()}: {selectedVehicle.GetModel().ToUpper()} | has been returned ");
-            }
-            catch (NullReferenceException)
-            {
-                DisplayErrorMessage("We could not find a result for your request! \n");
-                return;
-            }
-        }
-    }
-
-    
+   
+       //checks if status is available
+       if (selectedVehicle.GetAvailabilityStatus(true))
+       {
+           DisplayErrorMessage("This vehicle is already available. Therefore, it cannot be returned.");
+       }
+       else
+       {
+           //if status is unavailable, it changes it to being available as the customer has just returned it.
+           selectedVehicle.SetAvailabilityStatus(true);
+       }
+   }
+   else
+   {
+       DisplayErrorMessage("We could not find a result for your request! \n");
+       return;
+   }
 }
 
 void readVehicleFile()
@@ -619,10 +605,18 @@ ExistingUser SearchCustomerID()
 {
     // created this function as it is included within two other functions (rental info & display user info)
     ExistingUser selectedCustomer;
-
-    //ask user for their ID
-    Console.Write("\n Please enter your customer ID: ");
-    int customerSearch = Convert.ToInt32(Console.ReadLine());
+//ask user for their ID
+        Console.Write("\n Please enter your customer ID: ");
+        int customerSearch;
+    try
+    {
+        customerSearch = Convert.ToInt32(Console.ReadLine());
+    }
+    catch (FormatException e)
+    {
+        DisplayErrorMessage(e.Message);
+        return null;
+    }
 
     // this allows user to search for vehicle from dictionary 
     if (returningCustomers.ContainsKey(customerSearch))
@@ -659,25 +653,30 @@ void ExtendRentalPeriod()
         Console.WriteLine("Time taken: " + timer.ElapsedMilliseconds + "ms");
     });
 
-    Console.WriteLine("Please enter the extended date: (year/month/day/ hour:minute:second)\n");
-    DateTime extendedDate = Convert.ToDateTime(Console.ReadLine());
-
-    endDate = extendedDate;
-
-    /*foreach (var r in selectedCustomer.GetRentals())
+    try
     {
-        r.SetEndDate(extendedDate);
-        Console.WriteLine($"\nNew Rental info: {r.GetStartDate()} to {r.GetEndDate()}, \nMake: {r.GetMake().ToUpper()} \nModel: {r.GetModel().ToUpper()} \nTotal fee: £{r.RentCharge()}");
-    }*/
+        Console.WriteLine("Please enter the extended date: (year/month/day/ hour:minute:second)\n");
+        DateTime extendedDate = Convert.ToDateTime(Console.ReadLine());
 
-    Parallel.ForEach(selectedCustomer.GetRentals(), r =>
+        /*foreach (var r in selectedCustomer.GetRentals())
+        {
+            r.SetEndDate(extendedDate);
+            Console.WriteLine($"\nNew Rental info: {r.GetStartDate()} to {r.GetEndDate()}, \nMake: {r.GetMake().ToUpper()} \nModel: {r.GetModel().ToUpper()} \nTotal fee: £{r.RentCharge()}");
+        }*/
+
+        Parallel.ForEach(selectedCustomer.GetRentals(), r =>
+        {
+            //Console.WriteLine($"\nCurrent Rental info: {r.GetStartDate()} to {r.GetEndDate()}, \nMake: {r.GetMake().ToUpper()} \nModel: {r.GetModel().ToUpper()} \nTotal fee: £{r.RentCharge()}");
+            var timer2 = Stopwatch.StartNew();
+            r.SetEndDate(extendedDate);
+            Console.WriteLine($"\nNew Rental info: {r.GetStartDate()} to {r.GetEndDate()}, \nMake: {r.GetMake().ToUpper()} \nModel: {r.GetModel().ToUpper()} \nTotal fee: £{r.RentCharge()}");
+            Console.WriteLine("Time taken: " + timer2.ElapsedMilliseconds + "ms");
+        });
+
+    }catch (FormatException e)
     {
-        //Console.WriteLine($"\nCurrent Rental info: {r.GetStartDate()} to {r.GetEndDate()}, \nMake: {r.GetMake().ToUpper()} \nModel: {r.GetModel().ToUpper()} \nTotal fee: £{r.RentCharge()}");
-        var timer2 = Stopwatch.StartNew();
-        r.SetEndDate(extendedDate);
-        Console.WriteLine($"\nNew Rental info: {r.GetStartDate()} to {r.GetEndDate()}, \nMake: {r.GetMake().ToUpper()} \nModel: {r.GetModel().ToUpper()} \nTotal fee: £{r.RentCharge()}");
-        Console.WriteLine("Time taken: " + timer2.ElapsedMilliseconds + "ms");
-    });
+        DisplayErrorMessage(e.Message);
+    }
 }
 
 void SearchForVehicle()
@@ -710,11 +709,11 @@ void SearchForVehicle()
         Console.WriteLine("\nWould you like to display the statistics of this vehicle? ");
         string DisplayStats = Console.ReadLine().ToLower();
 
-        if (DisplayStats == "yes")
+        if (DisplayStats == "yes" || DisplayStats == "yep" || DisplayStats == "yup")
         {
             Console.WriteLine($"Statistics: \nAcceleration (0-60): {selectedVehicle.GetAcceleration()}  seconds \nPower: {selectedVehicle.GetPower()}  horsepower \nMileage: {selectedVehicle.GetMileage()}  miles \nFuel Economy: {selectedVehicle.GetFuelEconomy()}  mpg \nTop speed: {selectedVehicle.GetTopSpeed()}  mph \nNumber of doors: {selectedVehicle.GetDoors()} \nWeight of vehicle: {selectedVehicle.GetWeight()} kg \nDrivetrain: {selectedVehicle.GetDriveTrain()} \n Fuel Type: {selectedVehicle.GetFuelType()} \nEngine size: {selectedVehicle.GetEngineSize()} L \nTransmission type: {selectedVehicle.GetTransmission()} \nSeat capacity: {selectedVehicle.GetSeatCapacity()} \nFuel capacity: {selectedVehicle.GetFuelCapacity()}L \nWeight capacity: {selectedVehicle.GetWeightCapacity()} kg \nLoad capacity: {selectedVehicle.GetLoadCapacity()} cubic feet \nManufacturing year: {selectedVehicle.GetYear()} \nVehicle type: {selectedVehicle.GetVehicleType()} \nFeatures: {selectedVehicle.GetFeatures()}");
         }
-        else if (DisplayStats == "no")
+        else if (DisplayStats == "no" || DisplayStats == "nope" || DisplayStats == "none")
         {
             //do not print out stats and continue with program
             return;
@@ -772,6 +771,7 @@ void RentVehicle()
 {
     ExistingUser selectedCustomer = SearchCustomerID();
 
+    //outputs message if user ID is invalid 
     if (selectedCustomer == null)
     {
         DisplayErrorMessage("You must enter a valid user ID! ");
@@ -811,9 +811,10 @@ void RentVehicle()
                      Console.WriteLine($"\nNew Rental info: {r.GetStartDate()} to {r.GetEndDate()}, \nMake: {r.GetMake().ToUpper()} \nModel: {r.GetModel().ToUpper()} \nTotal fee: £{r.RentCharge()}");
                  }
              }
-             catch (FormatException)
+             catch (FormatException e)
              {
-                 DisplayErrorMessage("Wrong format entered! ");
+                Console.WriteLine(e.Message);
+                DisplayErrorMessage("Wrong format entered! \n");
              }
         }
         else
@@ -849,9 +850,10 @@ void DisplayStockList()
             Console.WriteLine("\n------------------------------------------------------------------------------");
         }
     }
-    catch (FileNotFoundException)
+    catch (FileNotFoundException e)
     {
-        DisplayErrorMessage("The required file was not found!");
+        Console.WriteLine(e.Message);
+        DisplayErrorMessage("\nThe required file was not found! \n");
     }
 }
 
@@ -867,7 +869,16 @@ void SearchVehicleAvailability()
 
     // use the GetAvailabilityStatus to find available vehicles and return the vehicles which == true
     Vehicle selectedVehicle;
-    selectedVehicle = vehicles[AvailableCar];
+    //string selectedVehicle;
+
+    try
+    {
+        selectedVehicle = vehicles[AvailableCar];
+    } catch (KeyNotFoundException e)
+    {
+        DisplayErrorMessage(e.Message);
+        return;
+    }
 
     if (selectedVehicle.GetAvailabilityStatus(true))
     {
@@ -900,7 +911,7 @@ void Mileage()
     Console.WriteLine("Would you like to display the vehicles with low mileage? (less than 30,000 miles) ");
     string lowmileage = Console.ReadLine().ToLower();
 
-    if (lowmileage == "yes")
+    if (lowmileage == "yes" || lowmileage == "yep" || lowmileage == "yup")
     {
         Console.WriteLine("Vehicles with low mileage: ");
 
@@ -917,7 +928,7 @@ void Mileage()
     Console.WriteLine("Would you like to display an ordered list of mileages? ");
     string displayOrderedMileage = Console.ReadLine().ToLower();
 
-    if (displayOrderedMileage == "yes")
+    if (displayOrderedMileage == "yes" || lowmileage == "yep" || lowmileage == "yup")
     {
         Console.WriteLine("Vehicles with low mileage: ");
 
@@ -944,7 +955,7 @@ void VehicleManufactureYear()
     Console.WriteLine("Would you like to display the vehicles from oldest to newest? ) ");
     string OldToNew = Console.ReadLine().ToLower();
 
-    if (OldToNew == "yes")
+    if (OldToNew == "yes" || OldToNew == "yep" || OldToNew == "yup")
     {
         IEnumerable<Vehicle> Sorted = vehicles.Values.OrderBy(year => year.GetYear());
         foreach (Vehicle year in Sorted)

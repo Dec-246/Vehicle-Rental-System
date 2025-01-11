@@ -2,7 +2,7 @@
   "profiles": {
     "SystemsProgrammingAssignment": {
       "commandName": "Project",
-      "commandLineArgs": "--newusermode"
+      "commandLineArgs": "--adminmode"
     }
   }
 }
