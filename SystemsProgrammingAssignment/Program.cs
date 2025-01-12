@@ -655,7 +655,7 @@ void ExtendRentalPeriod()
 
     try
     {
-        Console.WriteLine("Please enter the extended date: (year/month/day/ hour:minute:second)\n");
+        Console.WriteLine("Please enter the extended date: (YYYY/MM/DD / HH:MM:SS)\n");
         DateTime extendedDate = Convert.ToDateTime(Console.ReadLine());
 
         /*foreach (var r in selectedCustomer.GetRentals())
@@ -992,5 +992,3 @@ void DisplayErrorMessage(string message)
     Console.ForegroundColor = beforeRed;
     Console.WriteLine(message);
 }
-
-//view unique vehicles (pull dictionary into hashlist?)
